@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agente IA - Equipe 10</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -75,7 +75,7 @@
       display: block;
     }
 
-    /* Cards do Dashboard */
+    /* Dashboard */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -166,26 +166,35 @@
       font-size: 15px;
     }
 
-    /* Mapa de Calor */
+    /* Heatmap */
     .heatmap {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 4px;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
       margin-top: 20px;
     }
 
-    .heatmap div {
+    .heatmap .cell {
+      position: relative;
       width: 100%;
       padding-top: 100%;
-      background-color: #dfe6e9;
       border-radius: 4px;
-      position: relative;
-      transition: background 0.3s;
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .heatmap div.active {
-      background-color: var(--primary);
-    }
+    .heatmap .cell[data-value="0"] { background-color: #e0e0e0; color: #666; }
+    .heatmap .cell[data-value="1"] { background-color: #ffcdd2; }
+    .heatmap .cell[data-value="2"] { background-color: #ef9a9a; }
+    .heatmap .cell[data-value="3"] { background-color: #e57373; }
+    .heatmap .cell[data-value="4"] { background-color: #ef5350; }
+    .heatmap .cell[data-value="5"] { background-color: #c62828; }
 
     /* Configurações */
     .settings {
@@ -296,7 +305,8 @@
 
     <!-- Mapa de Calor -->
     <div id="heatmap" class="page">
-      <h3>Mapa de Calor</h3>
+      <h3>Mapa de Calor - Interações por Cliente</h3>
+      <p style="margin-bottom: 16px;">Cada célula representa um cliente. Cor = volume de interações.</p>
       <div class="heatmap" id="heatmapGrid"></div>
     </div>
 
@@ -312,7 +322,7 @@
   </div>
 
   <script>
-    // Menu
+    // Navegação
     const links = document.querySelectorAll(".sidebar a");
     const pages = document.querySelectorAll(".page");
     const title = document.querySelector(".header-title");
@@ -331,16 +341,17 @@
       });
     });
 
-    // Mapa de Calor (simulação)
+    // Mapa de Calor Dinâmico
     const heatmap = document.getElementById("heatmapGrid");
-    for (let i = 0; i < 50; i++) {
+    const totalCells = 35;
+    for (let i = 0; i < totalCells; i++) {
       const cell = document.createElement("div");
-      if (Math.random() > 0.6) {
-        cell.classList.add("active");
-      }
+      const value = Math.floor(Math.random() * 6); // 0 a 5
+      cell.className = "cell";
+      cell.dataset.value = value;
+      cell.textContent = value > 0 ? `${value * 10}+` : "";
       heatmap.appendChild(cell);
     }
   </script>
-
 </body>
 </html>
