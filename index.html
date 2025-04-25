@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agente IA - Equipe 10</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -13,6 +13,7 @@
       --text-light: #fff;
       --text-muted: #ccc;
       --bg-light: #f8f9fa;
+      --surface: #ffffff;
     }
 
     * {
@@ -74,6 +75,39 @@
       display: block;
     }
 
+    /* Cards do Dashboard */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .stat-card i {
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #777;
+    }
+
     /* Dossiê */
     .profile {
       max-width: 800px;
@@ -124,13 +158,6 @@
       font-size: 18px;
     }
 
-    .info-block ul {
-      list-style: disc;
-      padding-left: 20px;
-      color: #444;
-      font-size: 15px;
-    }
-
     .recommendation {
       background: #e8f0fe;
       padding: 16px;
@@ -139,22 +166,11 @@
       font-size: 15px;
     }
 
-    .download-btn {
-      background: var(--primary);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 32px;
-      font-size: 14px;
-    }
-
     /* Mapa de Calor */
     .heatmap {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
-      grid-gap: 4px;
+      gap: 4px;
       margin-top: 20px;
     }
 
@@ -168,13 +184,38 @@
     }
 
     .heatmap div.active {
-      background-color: #1a73e8;
+      background-color: var(--primary);
     }
 
-    @media (max-width: 768px) {
-      .heatmap {
-        grid-template-columns: repeat(5, 1fr);
-      }
+    /* Configurações */
+    .settings {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .settings label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .settings input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+    .settings button {
+      margin-top: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -182,9 +223,10 @@
 <body>
   <div class="sidebar">
     <h2>Agente IA</h2>
-    <a href="#" class="active" data-page="dashboard">Dashboard</a>
-    <a href="#" data-page="dossier">Dossiê</a>
-    <a href="#" data-page="heatmap">Mapa de Calor</a>
+    <a href="#" class="active" data-page="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a>
+    <a href="#" data-page="dossier"><i class="fas fa-id-badge"></i> Dossiê</a>
+    <a href="#" data-page="heatmap"><i class="fas fa-th"></i> Mapa de Calor</a>
+    <a href="#" data-page="settings"><i class="fas fa-cogs"></i> Configurações</a>
   </div>
 
   <div class="main-content">
@@ -192,8 +234,23 @@
 
     <!-- Dashboard -->
     <div id="dashboard" class="page active">
-      <h3>Bem-vindo ao Agente IA</h3>
-      <p>Utilize o menu para navegar entre o Dossiê e o Mapa de Calor.</p>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fas fa-users"></i>
+          <div class="stat-value">1.256</div>
+          <div class="stat-label">Leads analisados</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-bolt"></i>
+          <div class="stat-value">342</div>
+          <div class="stat-label">Ações automatizadas</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-check-circle"></i>
+          <div class="stat-value">89%</div>
+          <div class="stat-label">Taxa de conversão</div>
+        </div>
+      </div>
     </div>
 
     <!-- Dossiê -->
@@ -229,27 +286,29 @@
         <div class="info-block">
           <h3>🎯 Abordagem Recomendada</h3>
           <div class="recommendation">
-            Inicie com um case envolvendo IA para qualificação de leads.
-            Destaque o ganho de eficiência e integração com CRM legado.
+            Inicie com um case envolvendo IA para qualificação de leads.<br>
+            Destaque o ganho de eficiência e integração com CRM legado.<br>
             Fale de impacto no negócio, não de tecnologia.
           </div>
         </div>
-
-        <button class="download-btn">
-          <i class="fas fa-download"></i> Baixar briefing
-        </button>
       </div>
     </div>
 
     <!-- Mapa de Calor -->
     <div id="heatmap" class="page">
       <h3>Mapa de Calor</h3>
-      <p>Interações semanais por usuário.</p>
-      <div class="heatmap" id="heatmapGrid">
-        <!-- Gerado dinamicamente -->
-      </div>
+      <div class="heatmap" id="heatmapGrid"></div>
     </div>
 
+    <!-- Configurações -->
+    <div id="settings" class="page">
+      <div class="settings">
+        <label><input type="checkbox" checked> Notificações de novos leads</label>
+        <label><input type="checkbox" checked> Atualizações automáticas</label>
+        <label><input type="checkbox"> Exportar relatórios semanalmente</label>
+        <button>Salvar Configurações</button>
+      </div>
+    </div>
   </div>
 
   <script>
