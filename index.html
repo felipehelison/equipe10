@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agente IA - Equipe 10</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+    .sidebar { width: 250px; background: #1e2530; height: 100vh; position: fixed; color: #fff; overflow-y: auto; }
+    .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+    .sidebar-menu li { margin: 0; }
+    .sidebar-menu a { display: flex; align-items: center; color: #ccc; padding: 15px; text-decoration: none; transition: 0.3s; }
+    .sidebar-menu a:hover, .sidebar-menu a.active { background: #2d3748; color: #fff; }
+    .sidebar-menu i { margin-right: 10px; }
+    .main-content { margin-left: 250px; padding: 20px; }
+    .header { background: #fff; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .content-row { display: flex; gap: 20px; flex-wrap: wrap; }
+    .content-panel { background: #fff; border-radius: 10px; padding: 20px; flex: 1; min-width: 300px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+    button { background: #1a73e8; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #1565c0; }
+    .heat-grid { display: grid; grid-template-columns: repeat(10, 1fr); grid-gap: 5px; margin-top: 20px; }
+    .heat-cell { background-color: #eee; width: 30px; height: 30px; cursor: pointer; transition: background 0.3s; }
+    .heat-cell:hover { background-color: #1a73e8; }
+    .dossie-details { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div style="padding:20px; font-size:20px; font-weight:bold;">Agente IA</div>
+  <ul class="sidebar-menu">
+    <li><a href="#" class="menu-link active" data-page="dashboard-page"><i class="fas fa-chart-line"></i>Dashboard</a></li>
+    <li><a href="#" class="menu-link" data-page="leads-page"><i class="fab fa-linkedin"></i>Leads LinkedIn</a></li>
+    <li><a href="#" class="menu-link" data-page="qualification-page"><i class="fas fa-filter"></i>Qualificação</a></li>
+    <li><a href="#" class="menu-link" data-page="heatmap-page"><i class="fas fa-fire"></i>Mapa de Calor</a></li>
+    <li><a href="#" class="menu-link" data-page="dossie-page"><i class="fas fa-file-alt"></i>Dossiês</a></li>
+    <li><a href="#" class="menu-link" data-page="settings-page"><i class="fas fa-cog"></i>Configurações</a></li>
+  </ul>
+</div>
+
+<div class="main-content">
+  <div class="header">
+    <h1>Agente IA - Equipe 10 Marketing & Comercial</h1>
+  </div>
+
+  <div class="page active" id="dashboard-page">
+    <div class="stats-row">
+      <div class="stat-card"><h3>Leads Totais</h3><p>357</p></div>
+      <div class="stat-card"><h3>Leads Qualificados</h3><p>124</p></div>
+      <div class="stat-card"><h3>Dossiês Gerados</h3><p>78</p></div>
+    </div>
+  </div>
+
+  <div class="page" id="leads-page">
+    <h2>Leads LinkedIn</h2>
+    <table>
+      <thead><tr><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Ações</th></tr></thead>
+      <tbody>
+        <tr><td>Carlos Silva</td><td>Empresa XYZ</td><td>Diretor de Tecnologia</td><td><button onclick="viewDossie('Carlos Silva')">Ver Dossiê</button></td></tr>
+        <tr><td>Ana Martins</td><td>Tech Solutions</td><td>CEO</td><td><button onclick="viewDossie('Ana Martins')">Ver Dossiê</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page" id="qualification-page">
+    <h2>Qualificação de Leads</h2>
+    <p>Critérios de avaliação: Cargo, Engajamento, Empresa Ideal.</p>
+  </div>
+
+  <div class="page" id="heatmap-page">
+    <h2>Mapa de Calor</h2>
+    <div class="heat-grid" id="heatGrid"></div>
+  </div>
+
+  <div class="page" id="dossie-page">
+    <h2>Dossiê One Page</h2>
+    <div id="dossieContent" class="dossie-details">
+      <p>Selecione um lead para visualizar os detalhes...</p>
+    </div>
+  </div>
+
+  <div class="page" id="settings-page">
+    <h2>Configurações</h2>
+    <p>Configurações do sistema e integrações.</p>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const links = document.querySelectorAll('.menu-link');
+  const pages = document.querySelectorAll('.page');
+
+  links.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const targetPage = link.getAttribute('data-page');
+
+      pages.forEach(page => page.classList.remove('active'));
+      document.getElementById(targetPage).classList.add('active');
+
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  const heatGrid = document.getElementById('heatGrid');
+  for (let i = 0; i < 50; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'heat-cell';
+    heatGrid.appendChild(cell);
+  }
+});
+
+function viewDossie(name) {
+  const dossieContent = document.getElementById('dossieContent');
+  dossieContent.innerHTML = `<h3>${name}</h3><p>Informações completas sobre o lead, engajamento, interesse, e recomendações de abordagem.</p>`;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('dossie-page').classList.add('active');
+}
+</script>
+
+</body>
+</html>
