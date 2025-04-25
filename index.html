@@ -204,7 +204,7 @@
     </div>
     <div id="heatmap" class="page">
       <h3>📊 Mapa de Calor - Interações por Cliente</h3>
-      <p>Cada bloco representa um cliente. Cor = volume de interações.</p>
+      <p>Esta visualização permite que sua equipe comercial identifique rapidamente onde concentrar esforços, possibilitando uma abordagem mais estratégica e eficiente na conversão de leads.</p>
       <div id="treemap" style="width: 100%; height: 500px;"></div>
     </div>
     <div id="settings" class="page">
@@ -238,10 +238,10 @@
       const data = google.visualization.arrayToDataTable([
         ['Cliente', 'Categoria', 'Interações', 'Cor'],
         ['Clientes', null, 0, 0],
-        ['Jones', 'Clientes', 120, 5],
-        ['Jardine', 'Clientes', 90, 3],
-        ['Gill', 'Clientes', 85, 4],
-        ['Kivell', 'Clientes', 70, 2],
+        ['10 FRIOS', 'Clientes', 120, 5],
+        ['21 em analise', 'Clientes', 90, 3],
+        ['50 QUENTES', 'Clientes', 85, 4],
+        ['51 EM FASE DE VALIDACAO', 'Clientes', 70, 2],
       ]);
       const tree = new google.visualization.TreeMap(document.getElementById('treemap'));
       tree.draw(data, {
